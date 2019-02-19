@@ -24,10 +24,10 @@ class Win:
 
         self.folder = Label(master, textvariable=folder_path)
         self.browse = Button(text="Browse", command=browse_button)
-        self.sortpic = Button(text="Sort pictures (PNG/JPEG)", command=self.sort_pictures)
+        self.sortpic = Button(text="Sort pictures (JPG ONLY)", command=self.sort_pictures)
         self.status = Label(root, text="Nothing wrong")
         self.nb_err_jpg = Label(root, text="Number of non sorted jpg : 0")
-        self.nb_err_png = Label(root, text="Number of non sorted png : 0")
+#PNG        self.nb_err_png = Label(root, text="Number of non sorted png : 0")
         self.sorted = Label(root, text="Sorted files : 0")
         self.close_button = Button(master, text="Close", command=master.quit)
 
@@ -36,7 +36,7 @@ class Win:
         self.sortpic.pack()
         self.status.pack()
         self.nb_err_jpg.pack()
-        self.nb_err_png.pack()
+#PNG        self.nb_err_png.pack()
         self.sorted.pack()
         self.close_button.pack()
 
@@ -65,20 +65,20 @@ class Win:
 
 # Since png are not standard, getexif while rarely, or never work.
 # TODO Still trying to find a clean native way to get the creation date from png files
-            elif afile.endswith((".PNG", ".png")):
-                tmp = join(folder, afile)
-                print(tmp)
-                try:
-                    date = Image.open(tmp)._getexif()[36867]
-                    rename(tmp, join(folder, date.replace(' ', '_') + '.PNG'))
-                    sorted_files += 1
-                except Exception as e:
-                    print(e)
-                    print("No date for " + afile)
-                    png_e += 1
-                    self.status["text"] = "No date for " + afile
+#PNG            elif afile.endswith((".PNG", ".png")):
+#PNG                tmp = join(folder, afile)
+#PNG                print(tmp)
+#PNG                try:
+#PNG                    date = Image.open(tmp)._getexif()[36867]
+#PNG                    rename(tmp, join(folder, date.replace(' ', '_') + '.PNG'))
+#PNG                    sorted_files += 1
+#PNG                except Exception as e:
+#PNG                    print(e)
+#PNG                    print("No date for " + afile)
+#PNG                    png_e += 1
+#PNG                    self.status["text"] = "No date for " + afile
         self.nb_err_jpg["text"] = "Number of unchanged jpg : %d" % jpg_e
-        self.nb_err_png["text"] = "Number of unchanged png : %d" %  png_e
+#PNG        self.nb_err_png["text"] = "Number of unchanged png : %d" %  png_e
         self.sorted["text"] = "Sorted files : %d" % sorted_files
 
 root = Tk()
