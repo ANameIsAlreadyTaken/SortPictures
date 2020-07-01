@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from tkinter import filedialog
-from tkinter import *
+from tkinter import Tk, filedialog, StringVar, Label, Button
 from os import listdir, rename
 from os.path import isfile, join
 from PIL import Image
+
 
 def browse_button():
     # Allow user to select a directory and store it in global var
@@ -14,17 +14,19 @@ def browse_button():
     folder_path.set(filename)
 #    print(filename)
 
+
 class Win:
 
     def __init__(self, master):
         self.folder_path = StringVar()
-        
+
         self.master = master
-        master.title("A simple GUI")
+        master.title("Pictures sorter")
 
         self.folder = Label(master, textvariable=folder_path)
         self.browse = Button(text="Browse", command=browse_button)
-        self.sortpic = Button(text="Sort pictures (JPG ONLY)", command=self.sort_pictures)
+        self.sortpic = Button(
+            text="Sort pictures (JPG ONLY)", command=self.sort_pictures)
         self.status = Label(root, text="Nothing wrong")
         self.nb_err_jpg = Label(root, text="Number of non sorted jpg : 0")
 #PNG        self.nb_err_png = Label(root, text="Number of non sorted png : 0")
@@ -48,14 +50,15 @@ class Win:
 #        print(onlyfiles)
         sorted_files = 0
         jpg_e = 0
-        png_e = 0
+#PNG        png_e = 0
         for afile in onlyfiles:
-            if afile.endswith((".jpg", ".jpeg", ".JPG", ".JPEG")):
+            if afile.lower().endswith((".jpg", ".jpeg")):
                 tmp = join(folder, afile)
 #                print(tmp)
                 try:
                     date = Image.open(tmp)._getexif()[36867]
-                    rename(tmp, join(folder, date.replace(' ', '_').replace(':', '-') + '.JPG'))
+                    rename(tmp, join(folder, date.replace(
+                        ' ', '_').replace(':', '-') + '.JPG'))
                     sorted_files += 1
                 except Exception as e:
                     print(e)
@@ -80,6 +83,7 @@ class Win:
         self.nb_err_jpg["text"] = "Number of unchanged jpg : %d" % jpg_e
 #PNG        self.nb_err_png["text"] = "Number of unchanged png : %d" %  png_e
         self.sorted["text"] = "Sorted files : %d" % sorted_files
+
 
 root = Tk()
 folder_path = StringVar()
